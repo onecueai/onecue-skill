@@ -1,82 +1,91 @@
-# OneCue Agent Skill
+# OneCue
 
-**You forgot this. OneCue didn't.**
+Durable project memory for Claude Code.
 
-OneCue is a local-first Agent Skill for preserving the working context that is actually worth keeping: decisions, discoveries, insights, references, and open loops.
+**Stop re-teaching Claude your project.**
 
-It uses the open Agent Skills format rather than coupling M1 to one model or one coding agent.
+```bash
+npx skills add akashp1712/skills --skill onecue
+```
 
-## Install
-
-From your project:
+Same skill from the dedicated repo:
 
 ```bash
 npx skills add akashp1712/onecue-skill
 ```
 
-The Skills CLI can install skills into supported agents such as Claude Code, Cursor, Codex, GitHub Copilot, Windsurf, Gemini, Cline and others. Check your agent's current Agent Skills support.
+Browse: [skills.sh/akashp1712/skills](https://skills.sh/akashp1712/skills)
+
+## Store your first learning
+
+Tell Claude:
+
+```text
+Remember that the queue uses Postgres SKIP LOCKED instead of Redis.
+Redis reconnect duplicated jobs.
+```
+
+## Get it back
+
+Later, in a new session:
+
+```text
+make the queue faster
+```
+
+OneCue returns **one** sourced cue, or stays silent.
+
+Silence is success.
+
+## What it is
+
+[Memorable](https://memorable.sh) stores how the agent solved a task.
+
+OneCue stores what **this repository** learned, and whether that learning deserves to interrupt Claude now.
+
+Local files only for M1:
+
+```text
+.onecue/memories/
+```
+
+No account. No cloud. No dashboard.
+
+## What gets remembered
+
+- decisions and why they were made
+- approaches tried and rejected
+- debugging discoveries
+- architectural constraints
+- open loops worth resuming
+
+Routine chatter stays disposable. A conclusion without a reason is not a memory.
 
 ## Try it
-
-Tell your agent:
 
 ```text
 Remember that we decided not to turn the product into a CRM until customer demand proves it.
 The reason is to protect the narrow after-hours booking wedge.
 ```
 
-Later, while doing related work:
+Later:
 
 ```text
 What did we previously decide that is relevant to the job-management code I'm changing?
 ```
 
-A strong match can return one concise cue. A weak match should return nothing.
+A strong match returns one concise cue. A weak match returns nothing.
 
-## What gets remembered
+## Status
 
-- decisions and why they were made
-- discoveries that may matter later
-- non-obvious insights
-- unresolved/open loops
-- references whose future use is understood
+Ask Claude: `OneCue status`
 
-Routine chatter stays disposable.
-
-## Where M1 memory lives
-
-When the agent has filesystem access, OneCue writes Markdown files to:
-
-```text
-.onecue/memories/
-```
-
-That makes M1 local-first, inspectable, portable across compatible agents, and useful without a OneCue account.
-
-Review memory files before committing them if they contain sensitive project context.
+It should report only whether `.onecue/memories/` exists and how many files are there.
 
 ## What M1 does not do
 
-M1 does not yet provide cloud sync, browser capture, cross-device memory, background monitoring, team sharing, or ambient cues.
-
-Those come only if the first behavior proves useful: preserve something valuable now and recover it when later work makes it relevant.
-
-## Philosophy
-
-> Your work creates the context. OneCue creates the relevance.
-
-> Silence is a feature.
-
-> Preserve the reason, not just the conclusion.
-
-## Optional runtime adapters
-
-Agent Skills is the canonical distribution format. Runtime-specific adapters may be added separately when they improve installation or UX without changing the core skill behavior.
+Hooks, CLI, cloud sync, browser capture, and automatic prompt injection come later. Canonical spec: OneCue 6-pager in the product repo.
 
 ## License
 
 MIT
-
----
-
-[onecue.app](https://onecue.app)
