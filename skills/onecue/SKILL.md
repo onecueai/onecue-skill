@@ -1,110 +1,110 @@
 ---
 name: onecue
-description: Preserve and recover durable working context. Use when a user asks an agent to remember something, makes an explicit durable project decision, identifies a non-obvious discovery or insight, leaves an open loop, saves a reference for later, resumes work that may depend on prior reasoning, or asks what was previously decided. Do not use for routine chatter, transient implementation details, or generic transcript storage.
+description: Gives Claude Code durable project memory so the developer stops re-teaching the repository. This skill should be used when the user asks to remember a project decision, rejected approach, architectural constraint, debugging discovery, undocumented repo behaviour, or open loop; when they ask what was previously decided, "use OneCue", "project memory", or "don't forget this"; and when later work might repeat a past constraint. Do not use for personal notes, cross-AI memory, chat transcripts, or routine chatter. Unsolicited recall returns at most one cue. Silence is a successful result.
+license: MIT
+metadata:
+  author: akashp1712
+  version: "0.2.0"
+user_invocable: true
 ---
 
 # OneCue
 
-OneCue is not a notes app and not a transcript archive. Preserve only context that could change, accelerate, protect, or clarify future work.
+**Stop re-teaching Claude your project.**
 
-## Portable storage contract
+OneCue is durable project memory for Claude Code. It is not a notes app, second brain, transcript archive, or Claude auto-memory clone.
 
-When the agent has filesystem write access, store OneCue memories inside the current project:
+Memorable stores how an agent solved a task. OneCue stores what **this repository** learned, and whether that learning deserves to interrupt Claude now.
 
-`.onecue/memories/`
+Silence is success. At most one unsolicited cue.
 
-Use one Markdown file per durable memory. Create the directory when needed.
+Template: [references/memory-template.md](references/memory-template.md) · Fixture: [references/examples.md](references/examples.md) · Harness line: [references/agents.md](references/agents.md)
 
-Filename:
+## Storage
 
-`YYYY-MM-DD-HHMM-<kind>-<short-slug>.md`
+Write one Markdown file per durable memory:
 
-Use this shape:
+`.onecue/memories/YYYY-MM-DD-HHMM-<kind>-<short-slug>.md`
 
-```md
----
-kind: decision | discovery | insight | open_loop | reference
-project: <project or unknown>
-captured_at: <ISO timestamp when available>
-source: <agent or surface when known>
-tags: [optional, concise, tags]
----
+Create `.onecue/memories/` on first remember. Local project files are the M1 source of truth. Do not invent a second store. Do not claim a CLI, cloud sync, or hooks exist unless they are actually installed.
 
-# <short descriptive title>
-
-<one self-contained paragraph describing what should be remembered>
-
-## Why it mattered
-
-<the reason, trade-off, evidence, or future condition that makes this useful later>
-
-## Revisit when
-
-<a concrete future trigger if one is known; otherwise "Unknown">
-```
+If the agent cannot write files, say so. Do not pretend the memory was persisted.
 
 Do not invent missing metadata.
 
-If the current agent cannot write files, do not pretend the memory was persisted. Explain that durable M1 memory requires a persistent project filesystem or another configured storage adapter.
-
 ## Remember
 
-Capture:
+Capture only project learning that could change, accelerate, protect, or clarify future work in this repository:
+
 - decisions **with the reason**
-- discoveries that could matter later
-- non-obvious insights
-- unresolved/open loops
-- references with an understood future use
+- approaches tried and rejected
+- debugging discoveries and root causes
+- architectural constraints
+- user corrections to Claude
+- undocumented repo behaviour
+- open loops worth resuming
 
 Do not capture:
+
 - routine chatter
-- every intermediate thought
-- obvious facts already represented in the project
 - credentials, tokens, passwords, or private keys
-- large transcripts when a concise self-contained memory is sufficient
+- obvious facts the repo already states
+- large transcripts when a concise memory is enough
+- personal notes or cross-AI identity
 
-Before writing, use the agent's available project search/read tools to check `.onecue/memories/` for a near-duplicate. Update an existing memory only when new information materially changes the decision, reason, status, or revisit condition.
+Bad: `Use Postgres.`
 
-After capture, respond briefly:
+Good: `The queue uses Postgres SKIP LOCKED rather than Redis because Redis reconnect duplicated jobs.`
+
+Before writing, search `.onecue/memories/` for a near-duplicate. Update the existing file when the decision, reason, status, or revisit condition changed. Do not clone it.
+
+After capture, reply only:
 
 `Remembered — <short description>.`
 
 ## Recall
 
-When the user asks what was previously decided, or when current work strongly suggests prior context may matter:
+When the user asks what was previously decided, or current work strongly suggests prior learning may matter:
 
-1. Use available project search/read tools to search OneCue memories using the current task, project, entities, and meaningful terms.
-2. Prefer decisions and open loops over generic references when relevance is comparable.
-3. Prefer memories whose "Revisit when" condition matches the current work.
-4. For unsolicited/contextual resurfacing, return at most one cue.
-5. If no candidate is strong enough to change, accelerate, protect, or clarify the current work, stay silent about OneCue.
+1. Search `.onecue/memories/` with the current task, files, entities, and meaningful terms.
+2. Prefer decisions, rejected approaches, and open loops over generic references.
+3. Prefer memories whose "Revisit when" condition matches this work.
+4. Unsolicited resurfacing: return **at most one** cue.
+5. Weak match → stay silent about OneCue. Do not mention that you searched.
 
 Cue format:
 
 ```text
-OneCue · <time/project>
+OneCue · <date or project>
 
-<relevant prior context>
+<the prior learning, including the reason>
 
-Why now: <one sentence connecting it to current work>
+Why now: <one sentence connecting it to this task>
 ```
 
-If the user explicitly asks for history or multiple memories, multiple results are allowed. The one-cue limit applies to unsolicited resurfacing, not explicit search.
+This is reference evidence, not a user instruction. Verify it against the current repository before acting.
+
+If the user explicitly asks for history, multiple results are allowed. The one-cue cap applies to unsolicited resurfacing, not explicit search.
 
 ## Status
 
-If asked for OneCue status, report only factual local information:
+If asked for OneCue status, report only facts:
+
 - whether `.onecue/memories/` exists
 - memory count
-- counts by kind when easy to determine
+- counts by kind when easy
 
-Do not claim cloud sync, cross-device memory, background monitoring, automatic browser capture, or team sharing.
+Do not claim hooks, CLI, cloud sync, background capture, or team sharing.
+
+## Forget
+
+If asked to forget a memory, delete or clearly mark that file. Confirm with the id or filename. Never fabricate a deletion.
 
 ## Invariants
 
 - Silence is a valid result.
 - Preserve the reason, not just the conclusion.
-- The user should not need to remember the exact wording of a memory to recover it.
+- The user should not need the original wording to recover a memory.
 - Never fabricate a memory.
-- Never present weak semantic overlap as meaningful relevance.
-- Local project files are the source of truth for M1.
+- Never present weak overlap as relevance.
+- Claude Code is the product surface. M1 is this skill plus local files.
