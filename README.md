@@ -1,91 +1,110 @@
-# OneCue
+<h1 align="center">OneCue</h1>
 
-Durable project memory for Claude Code.
+<p align="center">
+  <strong>Context intelligence for software projects.</strong><br>
+  Your agents learn. OneCue remembers.
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="skills/onecue/SKILL.md"><img src="https://img.shields.io/badge/version-0.2.0-green.svg" alt="Version 0.2.0"></a>
+  <img src="https://img.shields.io/badge/runtime-local%20files-black.svg" alt="Local files only">
+</p>
+
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#what-gets-remembered">What gets remembered</a> ·
+  <a href="#ecosystem">Ecosystem</a> ·
+  <a href="#roadmap">Roadmap</a>
+</p>
+
+---
 
 **Stop re-teaching Claude your project.**
 
+Every new session, your agent starts from zero. The decision you made on Tuesday, the incident you debugged on Thursday — gone. OneCue gives Claude Code durable project memory: decisions, rejected approaches, and debugging discoveries that survive the session and surface exactly when they're relevant.
+
+Not a notes app. Not a transcript archive. Not another memory layer that dumps everything into context.
+
+**One cue. Or silence.**
+
+## Install
+
 ```bash
-npx skills add akashp1712/skills --skill onecue
+npx skills add onecueai/onecue-skill
 ```
 
-Same skill from the dedicated repo:
+Works with Claude Code today. Local files only — no account, no cloud, no dashboard.
 
-```bash
-npx skills add akashp1712/onecue-skill
-```
+## How it works
 
-Browse: [skills.sh/akashp1712/skills](https://skills.sh/akashp1712/skills)
-
-## Store your first learning
-
-Tell Claude:
+**Remember** — capture learning as it happens:
 
 ```text
 Remember that the queue uses Postgres SKIP LOCKED instead of Redis.
 Redis reconnect duplicated jobs.
 ```
 
-## Get it back
-
-Later, in a new session:
+OneCue writes one readable Markdown file per learning:
 
 ```text
-make the queue faster
+.onecue/memories/2026-09-13-0915-decision-queue-storage.md
 ```
 
-OneCue returns **one** sourced cue, or stays silent.
-
-Silence is success.
-
-## What it is
-
-[Memorable](https://memorable.sh) stores how the agent solved a task.
-
-OneCue stores what **this repository** learned, and whether that learning deserves to interrupt Claude now.
-
-Local files only for M1:
+**Recall** — the next session, ask for anything relevant:
 
 ```text
-.onecue/memories/
+Make the queue faster.
 ```
 
-No account. No cloud. No dashboard.
+OneCue returns **one** sourced cue — the decision, its reason, and the file it came from. The agent applies it or ignores it.
+
+**Silence** — fix a README typo, and nothing surfaces. A memory is useful only when it changes the next action. Silence is a successful result.
 
 ## What gets remembered
 
-- decisions and why they were made
-- approaches tried and rejected
-- debugging discoveries
-- architectural constraints
-- open loops worth resuming
+| Capture | Never capture |
+| --- | --- |
+| Decisions **with the reason** | Routine chatter |
+| Approaches tried and rejected | Credentials, tokens, keys |
+| Debugging discoveries and root causes | Facts the repo already states |
+| Architectural constraints | Raw transcripts |
+| User corrections | Personal or cross-AI notes |
+| Open loops worth resuming | A conclusion without a reason |
 
-Routine chatter stays disposable. A conclusion without a reason is not a memory.
+**Bad:** `Use Postgres.`
+**Good:** `The queue uses Postgres SKIP LOCKED rather than Redis because Redis reconnect duplicated jobs.`
 
-## Try it
-
-```text
-Remember that we decided not to turn the product into a CRM until customer demand proves it.
-The reason is to protect the narrow after-hours booking wedge.
-```
-
-Later:
-
-```text
-What did we previously decide that is relevant to the job-management code I'm changing?
-```
-
-A strong match returns one concise cue. A weak match returns nothing.
+Before writing, OneCue searches `.onecue/memories/` for a near-duplicate and updates it instead of cloning.
 
 ## Status
 
 Ask Claude: `OneCue status`
 
-It should report only whether `.onecue/memories/` exists and how many files are there.
+It reports only whether `.onecue/memories/` exists and how many files it holds.
 
-## What M1 does not do
+## Ecosystem
 
-Hooks, CLI, cloud sync, browser capture, and automatic prompt injection come later. Canonical spec: OneCue 6-pager in the product repo.
+- **[onecue-doctor](https://github.com/onecueai/onecue-doctor)** — diagnoses your setup: store, hooks, runtime. Run it when a memory doesn't surface.
+- **`onecue` CLI** — deterministic capture and recall via Claude Code hooks: `init`, `remember`, `recall`, `doctor`, `status`. In development.
+- **OneCue Cloud** — shared memory across sessions and tools via skills + MCP. [Join the waitlist](https://onecue.app).
+
+## Roadmap
+
+- [x] Local Markdown store — the M1 source of truth
+- [x] Recall with relevance gating and silence
+- [ ] `onecue` CLI with hooks (auto-recall on every prompt)
+- [ ] `onecue doctor` diagnostics
+- [ ] MCP server — the same memory across every agent
+- [ ] OneCue Cloud — team-shared context, spend analysis
+
+## Principles
+
+- **Readable files, not a black box.** `.onecue/memories/` is Markdown you can diff, grep, and commit.
+- **One cue, or silence.** Relevance is gated; noise is the failure mode.
+- **Honest over helpful.** If OneCue can't persist, it says so — it never pretends a memory was saved.
 
 ## License
 
-MIT
+[MIT](LICENSE)

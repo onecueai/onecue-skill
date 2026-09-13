@@ -13,7 +13,7 @@ When we learn a decision, rejected approach, constraint, or debugging discovery 
 
 When later work might repeat that learning, search `.onecue/memories/` and inject at most one cue — or stay silent.
 
-Install: `npx skills add akashp1712/skills --skill onecue`
+Install: `npx skills add onecueai/onecue-skill`
 ```
 
 Do not paste this unless the user asked to wire the repo or ran install.

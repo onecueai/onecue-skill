@@ -3,7 +3,7 @@ name: onecue
 description: Gives Claude Code durable project memory so the developer stops re-teaching the repository. This skill should be used when the user asks to remember a project decision, rejected approach, architectural constraint, debugging discovery, undocumented repo behaviour, or open loop; when they ask what was previously decided, "use OneCue", "project memory", or "don't forget this"; and when later work might repeat a past constraint. Do not use for personal notes, cross-AI memory, chat transcripts, or routine chatter. Unsolicited recall returns at most one cue. Silence is a successful result.
 license: MIT
 metadata:
-  author: akashp1712
+  author: onecueai
   version: "0.2.0"
 user_invocable: true
 ---
