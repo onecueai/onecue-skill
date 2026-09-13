@@ -88,8 +88,8 @@ It reports only whether `.onecue/memories/` exists and how many files it holds.
 ## Ecosystem
 
 - **[onecue-doctor](https://github.com/onecueai/onecue-doctor)** — diagnoses your setup: store, hooks, runtime. Run it when a memory doesn't surface.
-- **`onecue` CLI** — deterministic capture and recall via Claude Code hooks: `init`, `remember`, `recall`, `doctor`, `status`. In development.
-- **OneCue Cloud** — shared memory across sessions and tools via skills + MCP. [Join the waitlist](https://onecue.app).
+- **`onecue` CLI** — deterministic capture and recall via agent hooks: `init`, `remember`, `recall`, `doctor`, `status`. `npm i -g onecue-cli`
+- **OneCue Cloud** — shared memory across sessions and tools via skills + MCP. [Join the waitlist](https://onecue.sh).
 
 ## Roadmap
 
