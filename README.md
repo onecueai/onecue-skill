@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="skills/onecue/SKILL.md"><img src="https://img.shields.io/badge/version-0.2.0-green.svg" alt="Version 0.2.0"></a>
+  <a href="skills/onecue/SKILL.md"><img src="https://img.shields.io/badge/version-0.3.0-green.svg" alt="Version 0.3.0"></a>
   <img src="https://img.shields.io/badge/runtime-local%20files-black.svg" alt="Local files only">
   <a href="https://skills.sh/onecueai/onecue-skill"><img src="https://skills.sh/b/onecueai/onecue-skill" alt="Installs on skills.sh"></a>
 </p>
@@ -32,11 +32,21 @@ Not a notes app. Not a transcript archive. Not another memory layer that dumps e
 
 ## Install
 
+One command inside your repo — installs the `onecue` CLI, this skill, recall hooks, and the local store:
+
+```bash
+curl -fsSL https://onecue.sh/install.sh | sh
+```
+
+Works with Claude Code and Devin today. Local files only — no account, no cloud, no dashboard.
+
+**Skill only** (no CLI, no hooks — the agent still captures and recalls on request):
+
 ```bash
 npx skills add onecueai/onecue-skill
 ```
 
-Works with Claude Code today. Local files only — no account, no cloud, no dashboard.
+**Or npm**: `npm i -g onecue-cli`, then `onecue install` inside your repo.
 
 ## How it works
 
@@ -95,8 +105,8 @@ It reports only whether `.onecue/memories/` exists and how many files it holds.
 
 - [x] Local Markdown store — the M1 source of truth
 - [x] Recall with relevance gating and silence
-- [ ] `onecue` CLI with hooks (auto-recall on every prompt)
-- [ ] `onecue doctor` diagnostics
+- [x] `onecue` CLI with hooks (auto-recall on every prompt)
+- [x] `onecue doctor` diagnostics
 - [ ] MCP server — the same memory across every agent
 - [ ] OneCue Cloud — team-shared context, spend analysis
 

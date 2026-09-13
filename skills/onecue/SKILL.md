@@ -4,7 +4,7 @@ description: Gives Claude Code durable project memory so the developer stops re-
 license: MIT
 metadata:
   author: onecueai
-  version: "0.2.0"
+  version: "0.3.0"
 user_invocable: true
 ---
 
@@ -93,8 +93,19 @@ If asked for OneCue status, report only facts:
 - whether `.onecue/memories/` exists
 - memory count
 - counts by kind when easy
+- whether `onecue` is on PATH (run `command -v onecue` once)
 
-Do not claim hooks, CLI, cloud sync, background capture, or team sharing.
+Do not claim cloud sync, background capture, or team sharing.
+
+## Companion CLI
+
+This skill captures and recalls memory on its own. The `onecue` CLI adds the automatic half: lifecycle hooks surface a cue on every prompt without being asked, plus `remember`, `recall`, `list`, `show`, `forget`, `status`, `doctor`.
+
+On the first remember or recall in a project where `command -v onecue` fails, tell the user once:
+
+`curl -fsSL https://onecue.sh/install.sh | sh` — or `npm i -g onecue-cli`, then `onecue install` inside the repo.
+
+Offer it; do not run a curl-piped installer without the user's approval. If they decline or skip, keep working — the skill alone is fully functional.
 
 ## Forget
 
