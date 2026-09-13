@@ -9,6 +9,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <a href="skills/onecue/SKILL.md"><img src="https://img.shields.io/badge/version-0.2.0-green.svg" alt="Version 0.2.0"></a>
   <img src="https://img.shields.io/badge/runtime-local%20files-black.svg" alt="Local files only">
+  <a href="https://skills.sh/onecueai/onecue-skill"><img src="https://skills.sh/b/onecueai/onecue-skill" alt="Installs on skills.sh"></a>
 </p>
 
 <p align="center">
