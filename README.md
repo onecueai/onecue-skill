@@ -1,13 +1,13 @@
 <h1 align="center">OneCue</h1>
 
 <p align="center">
-  <strong>Context intelligence for software projects.</strong><br>
-  Your agents learn. OneCue remembers.
+  <strong>The decision layer for coding agents.</strong><br>
+  Stop your agent re-deciding what you already decided.
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="skills/onecue/SKILL.md"><img src="https://img.shields.io/badge/version-0.3.0-green.svg" alt="Version 0.3.0"></a>
+  <a href="skills/onecue/SKILL.md"><img src="https://img.shields.io/badge/version-0.4.0-green.svg" alt="Version 0.4.0"></a>
   <img src="https://img.shields.io/badge/runtime-local%20files-black.svg" alt="Local files only">
   <a href="https://skills.sh/onecueai/onecue-skill"><img src="https://skills.sh/b/onecueai/onecue-skill" alt="Installs on skills.sh"></a>
 </p>
@@ -57,9 +57,10 @@ Remember that the queue uses Postgres SKIP LOCKED instead of Redis.
 Redis reconnect duplicated jobs.
 ```
 
-OneCue writes one readable Markdown file per learning:
+OneCue writes one readable Markdown file per learning. With the CLI, that file lands in the git-visible decisions store; without it, the skill writes a fallback file:
 
 ```text
+.onecue/decisions/2026-09-13T09-15-00-000Z-decision-a1b2c3d4.md
 .onecue/memories/2026-09-13-0915-decision-queue-storage.md
 ```
 

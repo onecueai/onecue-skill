@@ -4,7 +4,7 @@ description: Gives Claude Code durable project memory so the developer stops re-
 license: MIT
 metadata:
   author: onecueai
-  version: "0.3.0"
+  version: "0.4.0"
 user_invocable: true
 ---
 
@@ -22,11 +22,13 @@ Template: [references/memory-template.md](references/memory-template.md) · Fixt
 
 ## Storage
 
-Write one Markdown file per durable memory:
+**If `onecue` is on PATH, delegate to it** — run `command -v onecue` once. When present, the CLI owns the single canonical, git-visible store at `.onecue/decisions/` (stable ids, dedupe, redaction). Capture and recall through it (see Remember / Recall); do not hand-write files.
+
+**Only when `onecue` is absent**, fall back to writing one Markdown file per memory yourself:
 
 `.onecue/memories/YYYY-MM-DD-HHMM-<kind>-<short-slug>.md`
 
-Create `.onecue/memories/` on first remember. Local project files are the M1 source of truth. Do not invent a second store. Do not claim a CLI, cloud sync, or hooks exist unless they are actually installed.
+Create `.onecue/memories/` on first remember. These standalone files are the M1 fallback and stay fully functional with no CLI. If the CLI is installed later, `onecue doctor` flags any `.onecue/memories/` still to be imported into the canonical store. Do not invent a third store. Do not claim cloud sync or hooks exist unless they are actually installed.
 
 If the agent cannot write files, say so. Do not pretend the memory was persisted.
 
@@ -56,7 +58,9 @@ Bad: `Use Postgres.`
 
 Good: `The queue uses Postgres SKIP LOCKED rather than Redis because Redis reconnect duplicated jobs.`
 
-Before writing, search `.onecue/memories/` for a near-duplicate. Update the existing file when the decision, reason, status, or revisit condition changed. Do not clone it.
+**With the CLI (preferred):** run `onecue remember "<the learning, including the reason>" --kind <decision|discovery|insight|open_loop|reference>`. It dedupes, redacts, and writes to the canonical `.onecue/decisions/` — you do not manage files.
+
+**Fallback (no CLI):** search `.onecue/memories/` for a near-duplicate first, and update the existing file when the decision, reason, status, or revisit condition changed rather than cloning it. Then write the Markdown file.
 
 After capture, reply only:
 
@@ -66,7 +70,8 @@ After capture, reply only:
 
 When the user asks what was previously decided, or current work strongly suggests prior learning may matter:
 
-1. Search `.onecue/memories/` with the current task, files, entities, and meaningful terms.
+0. **With the CLI (preferred):** run `onecue recall "<current task / context>" --json`. A non-empty array is your cue (use the top item's `text` and `reason`); an empty array `[]` means stay silent. The CLI already applies the relevance threshold and the one-cue cap.
+1. **Fallback (no CLI):** search `.onecue/memories/` with the current task, files, entities, and meaningful terms.
 2. Prefer decisions, rejected approaches, and open loops over generic references.
 3. Prefer memories whose "Revisit when" condition matches this work.
 4. Unsolicited resurfacing: return **at most one** cue.
@@ -99,7 +104,7 @@ Do not claim cloud sync, background capture, or team sharing.
 
 ## Companion CLI
 
-This skill captures and recalls memory on its own. The `onecue` CLI adds the automatic half: lifecycle hooks surface a cue on every prompt without being asked, plus `remember`, `recall`, `list`, `show`, `forget`, `status`, `doctor`.
+This skill captures and recalls memory on its own when the CLI is absent. When the `onecue` CLI is installed it becomes the source of truth: it owns the canonical `.onecue/decisions/` store and adds the automatic half — lifecycle hooks surface a cue on every prompt without being asked — plus `remember`, `recall`, `list`, `show`, `forget`, `status`, `doctor`. Prefer it whenever it is on PATH.
 
 On the first remember or recall in a project where `command -v onecue` fails, tell the user once:
 
@@ -118,4 +123,5 @@ If asked to forget a memory, delete or clearly mark that file. Confirm with the 
 - The user should not need the original wording to recover a memory.
 - Never fabricate a memory.
 - Never present weak overlap as relevance.
+- When the CLI is present, its `.onecue/decisions/` store is canonical — capture and recall through `onecue`, do not fork memory into `.onecue/memories/`.
 - Claude Code is the product surface. M1 is this skill plus local files.

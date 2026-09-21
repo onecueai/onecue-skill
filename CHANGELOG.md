@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — 2026-09-21
+
+Decision-layer positioning. When `onecue` is on PATH, the CLI owns the canonical git-visible store at `.onecue/decisions/`. Skill-only fallback remains `.onecue/memories/`.
+
+- README one-liner: *Stop your agent re-deciding what you already decided.*
+- SKILL.md delegates remember/recall to `onecue` whenever the binary is available
+- Tombstone-on-forget stays a CLI concern; the skill-only path still marks or deletes the fallback file
+
 ## 0.2.0 — 2026-09-06
 
 M1 polish. Searchable like the rest of [akashp1712/skills](https://github.com/akashp1712/skills). Install experience matched to [Memorable](https://memorable.sh): one command, then normal Claude work.
